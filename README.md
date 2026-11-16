@@ -12,3 +12,18 @@
 
 `mvn test`: 18 pruebas en verde antes de refactorizar, después del Long Method y después del switch
 (ninguna prueba modificada).
+
+## Parte 2 — Diagnóstico del acoplamiento entre paquetes
+
+`ArquitecturaPaquetesTest` (ArchUnit) falla: `InventarioService` importa `ReporteBajoStockService` y este
+importa `InventarioService`.
+
+```
+ ┌──────────────┐  InventarioService → ReporteBajoStockService  ┌────────────┐
+ │  inventario  │ ────────────────────────────────────────────▶ │  reportes  │
+ │              │ ◀──────────────────────────────────────────── │            │
+ └──────────────┘  ReporteBajoStockService → InventarioService   └────────────┘
+                         ciclo: inventario → reportes → inventario
+```
+
+![Prueba de arquitectura en rojo](docs/01-arquitectura-en-rojo.png)
